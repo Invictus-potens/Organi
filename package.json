@@ -1,18 +1,17 @@
 {
-  "name": "kanban-app",
+  "name": "kanban-app-web",
   "version": "1.0.0",
-  "description": "A simple Kanban board application built with Electron.",
-  "main": "main.js",
+  "description": "A simple Kanban board web application.",
   "scripts": {
-    "start": "electron ."
+    "start": "live-server --port=8080"
   },
   "keywords": [
-    "Electron",
-    "Kanban"
+    "Kanban",
+    "JavaScript"
   ],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "electron": "^28.0.0"
+    "live-server": "^1.2.2"
   }
 }
