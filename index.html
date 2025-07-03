@@ -1,205 +1,42 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minhas Anotações</title>
-    <style>
-        body {
-            font-family: sans-serif;
-            margin: 20px;
-            background-color: #f4f4f4;
-            color: #333;
-        }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background-color: #fff;
-            padding: 20px 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        h1 {
-            text-align: center;
-            color: #4CAF50;
-        }
-        textarea {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            box-sizing: border-box; /* Garante que o padding não aumente a largura total */
-            font-size: 1rem;
-            min-height: 150px;
-            resize: vertical; /* Permite redimensionar verticalmente */
-        }
-        button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 1rem;
-            margin-right: 10px;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-        .note-list {
-            margin-top: 20px;
-            border-top: 1px solid #eee;
-            padding-top: 20px;
-        }
-        .note-item {
-            background-color: #f9f9f9;
-            border: 1px solid #eee;
-            padding: 10px 15px;
-            margin-bottom: 10px;
-            border-radius: 5px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            word-wrap: break-word; /* Garante que o texto longo quebre a linha */
-        }
-        .note-item p {
-            margin: 0;
-            flex-grow: 1; /* Permite que o parágrafo ocupe o espaço disponível */
-            padding-right: 10px; /* Espaço entre o texto e os botões */
-        }
-        .note-item .note-actions button {
-            padding: 5px 10px;
-            font-size: 0.8rem;
-        }
-        .note-item .note-actions .delete-btn {
-            background-color: #f44336;
-        }
-        .note-item .note-actions .delete-btn:hover {
-            background-color: #da190b;
-        }
-        .note-item .note-actions .edit-btn {
-            background-color: #2196F3;
-        }
-        .note-item .note-actions .edit-btn:hover {
-            background-color: #0b7dda;
-        }
-        /* Estilo para notas vazias */
-        .no-notes {
-            text-align: center;
-            color: #777;
-            font-style: italic;
-            padding: 20px;
-        }
-    </style>
+    <title>Kanban Board</title>
+    <!-- <link rel="stylesheet" href="style.css"> -->
 </head>
 <body>
-    <div class="container">
-        <h1>Minhas Anotações</h1>
+    <h1>Kanban Board</h1>
 
-        <div>
-            <textarea id="noteInput" placeholder="Digite sua anotação aqui..."></textarea>
-            <button id="saveNoteBtn">Salvar Anotação</button>
-            <button id="clearInputBtn">Limpar</button>
+    <div class="app-container">
+        <div class="add-task-container">
+            <input type="text" id="task-input" placeholder="Enter new task...">
+            <button id="add-task-btn">Add Task</button>
         </div>
 
-        <div class="note-list" id="notesContainer">
-            <p class="no-notes" id="noNotesMessage">Nenhuma anotação ainda. Comece a digitar!</p>
+        <div id="kanban-board-container">
+            <div class="kanban-column" id="todo-column">
+                <h2>To Do</h2>
+                <div class="tasks-container" id="todo-tasks">
+                    <!-- Tasks will be added here -->
+                </div>
+            </div>
+            <div class="kanban-column" id="inprogress-column">
+                <h2>In Progress</h2>
+                <div class="tasks-container" id="inprogress-tasks">
+                    <!-- Tasks will be added here -->
+                </div>
+            </div>
+            <div class="kanban-column" id="done-column">
+                <h2>Done</h2>
+                <div class="tasks-container" id="done-tasks">
+                    <!-- Tasks will be added here -->
+                </div>
+            </div>
         </div>
     </div>
 
-    <script>
-        const noteInput = document.getElementById('noteInput');
-        const saveNoteBtn = document.getElementById('saveNoteBtn');
-        const clearInputBtn = document.getElementById('clearInputBtn');
-        const notesContainer = document.getElementById('notesContainer');
-        const noNotesMessage = document.getElementById('noNotesMessage');
-
-        let notes = JSON.parse(localStorage.getItem('notes')) || [];
-        let editingIndex = -1; // Para controlar qual anotação está sendo editada
-
-        // Função para salvar as anotações no localStorage
-        function saveNotes() {
-            localStorage.setItem('notes', JSON.stringify(notes));
-            renderNotes();
-        }
-
-        // Função para renderizar (mostrar) as anotações
-        function renderNotes() {
-            notesContainer.innerHTML = ''; // Limpa o container antes de renderizar
-            if (notes.length === 0) {
-                notesContainer.appendChild(noNotesMessage);
-                noNotesMessage.style.display = 'block'; // Mostra a mensagem de "nenhuma anotação"
-                return;
-            } else {
-                noNotesMessage.style.display = 'none'; // Esconde a mensagem
-            }
-
-            notes.forEach((note, index) => {
-                const noteItem = document.createElement('div');
-                noteItem.classList.add('note-item');
-                noteItem.innerHTML = `
-                    <p>${note}</p>
-                    <div class="note-actions">
-                        <button class="edit-btn" data-index="${index}">Editar</button>
-                        <button class="delete-btn" data-index="${index}">Excluir</button>
-                    </div>
-                `;
-                notesContainer.appendChild(noteItem);
-            });
-
-            addNoteEventListeners();
-        }
-
-        // Adiciona event listeners aos botões de editar e excluir
-        function addNoteEventListeners() {
-            document.querySelectorAll('.edit-btn').forEach(button => {
-                button.addEventListener('click', (e) => {
-                    const index = e.target.dataset.index;
-                    noteInput.value = notes[index];
-                    editingIndex = index;
-                    saveNoteBtn.textContent = 'Atualizar Anotação';
-                });
-            });
-
-            document.querySelectorAll('.delete-btn').forEach(button => {
-                button.addEventListener('click', (e) => {
-                    const index = e.target.dataset.index;
-                    notes.splice(index, 1); // Remove a anotação do array
-                    saveNotes();
-                });
-            });
-        }
-
-        // Evento para salvar ou atualizar a anotação
-        saveNoteBtn.addEventListener('click', () => {
-            const noteText = noteInput.value.trim();
-            if (noteText) {
-                if (editingIndex !== -1) {
-                    // Atualiza a anotação existente
-                    notes[editingIndex] = noteText;
-                    editingIndex = -1; // Reseta o índice de edição
-                    saveNoteBtn.textContent = 'Salvar Anotação';
-                } else {
-                    // Adiciona uma nova anotação
-                    notes.push(noteText);
-                }
-                noteInput.value = ''; // Limpa o campo de texto
-                saveNotes();
-            } else {
-                alert('Por favor, digite sua anotação antes de salvar.');
-            }
-        });
-
-        // Evento para limpar o campo de entrada
-        clearInputBtn.addEventListener('click', () => {
-            noteInput.value = '';
-            editingIndex = -1; // Garante que o modo de edição seja desativado
-            saveNoteBtn.textContent = 'Salvar Anotação';
-        });
-
-        // Carrega as anotações ao carregar a página
-        document.addEventListener('DOMContentLoaded', renderNotes);
-    </script>
+    <script src="renderer.js"></script>
+    <link rel="stylesheet" href="style.css">
 </body>
 </html>

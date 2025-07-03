@@ -1,0 +1,97 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f7f6;
+    color: #333;
+}
+
+h1 {
+    text-align: center;
+    color: #2a9d8f;
+}
+
+.app-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.add-task-container {
+    margin-bottom: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+#task-input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1em;
+    width: 300px;
+}
+
+#add-task-btn {
+    padding: 10px 15px;
+    background-color: #2a9d8f;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+#add-task-btn:hover {
+    background-color: #268a7e;
+}
+
+#kanban-board-container {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    max-width: 1200px;
+    gap: 20px;
+}
+
+.kanban-column {
+    background-color: #e9ecef;
+    border-radius: 5px;
+    padding: 15px;
+    width: 30%;
+    min-height: 400px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.kanban-column h2 {
+    text-align: center;
+    color: #343a40;
+    margin-top: 0;
+    border-bottom: 2px solid #ced4da;
+    padding-bottom: 10px;
+}
+
+.tasks-container {
+    min-height: 300px; /* Ensure columns have a minimum height for drag-and-drop */
+    padding-top: 10px;
+}
+
+.task-item {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+    margin-bottom: 10px;
+    cursor: grab;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.task-item:active {
+    cursor: grabbing;
+    background-color: #f0f0f0;
+}
+
+/* Styling for when a task is being dragged */
+.dragging {
+    opacity: 0.5;
+    border: 2px dashed #007bff;
+}
