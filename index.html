@@ -6,17 +6,28 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Kanban Board</h1>
-
-    <div class="app-container">
-        <div class="add-task-container">
-            <input type="text" id="task-input" placeholder="Enter new task...">
-            <button id="add-task-btn">Add Task</button>
+    <div id="page-container">
+        <div id="sidebar">
+            <h2>Menu</h2>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Boards</a></li>
+                <li><a href="#">Settings</a></li>
+                <li><a href="#">Profile</a></li>
+            </ul>
         </div>
 
-        <div id="kanban-board-container">
-            <div class="kanban-column" id="todo-column">
-                <h2>To Do</h2>
+        <div id="main-content">
+            <h1>Kanban Board</h1>
+            <div class="app-container">
+                <div class="add-task-container">
+                    <input type="text" id="task-input" placeholder="Enter new task...">
+                    <button id="add-task-btn">Add Task</button>
+                </div>
+
+                <div id="kanban-board-container">
+                    <div class="kanban-column" id="todo-column">
+                        <h2>To Do</h2>
                 <div class="tasks-container" id="todo-tasks">
                     <!-- Tasks will be added here -->
                 </div>
@@ -31,6 +42,8 @@
                 <h2>Done</h2>
                 <div class="tasks-container" id="done-tasks">
                     <!-- Tasks will be added here -->
+                </div>
+            </div>
                 </div>
             </div>
         </div>
